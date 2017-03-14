@@ -25,7 +25,7 @@ distance_cm()
 +++++++++++++++++++++++
 
 
-Get the distance in cm with one decimal.
+Get the distance in mm.
 
 
 .. code-block:: python
@@ -36,6 +36,6 @@ Get the distance in cm with one decimal.
 
    sonar=HCSR04()
    while True:
-       print('%.1f' % sonar.distance_cm())
+       print('%.1f' % (sonar.distance_mm()/10))
        sleep(1000)
 
