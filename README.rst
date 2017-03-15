@@ -1,4 +1,4 @@
-Basic micropython library to read the distance from an ultrasonic sensor
+Basic micropython library for the micro:bit to read the distance from an ultrasonic sensor
 ########################################################################
 
 This library allows the micro:bit to read the distance from an ultrasonic sensor HCSR04 or similar.
