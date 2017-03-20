@@ -5,6 +5,13 @@ This library allows the micro:bit to read the distance from an ultrasonic sensor
 
 It uses the SPI hardware internal device to measure the length of the returning echo, so by default you should connect the sonar echo pin to micro:bit pin 14 and th sonar trigger pin to micro:bit pin 15. The HC-SR04 works with 5V, so you should protect the micro:bit input with a couple of resistors. Note that you can use a US-100 with this library as well. The US-100 has the advantage that works directly with 3V, but it has a serial mode that provides better readings.
 
+
+   .. image:: spi.png
+      :width: 100%
+      :align: center
+
+
+
 .. contents::
 
 .. section-numbering::
