@@ -5,7 +5,7 @@ from microbit import sleep, button_a, display
 sonar = HCSR04()
 while True:
     if button_a.is_pressed():
-        distance = int(sonar.distance_cm())
+        distance = round(sonar.distance_mm()/10)
         if distance < 10:
             display.show(str(distance))
         else:
