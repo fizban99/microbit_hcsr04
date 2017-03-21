@@ -10,7 +10,7 @@ It uses the SPI hardware internal device to measure the length of the returning 
       :width: 100%
       :align: center
 
-These sensors look like robot eyes. In fact, one eye is an emitter and the other is a receiver. The sensor is triggered with a pulse of around 10 microseconds. When it gets the pulse from the micro:bit, it sends an ultrasonic tone through one of the "eyes". The other eye detects the reflection of the sound. The sensor generates a pulse as wide as the time it took for the frequency to be detected. So the width is equivalent to the time it takes the sound to reach the object and come back, which is twice as much as the distance to the object. 
+These sensors look like robot eyes. In fact, one eye is an emitter and the other is a receiver. The sensor is triggered with a pulse of around 10 microseconds. When it gets the pulse from the micro:bit, it sends an ultrasonic tone through one of the "eyes". The other eye detects the reflection of the sound. The sensor generates a pulse as wide as the time it took for the frequency to be detected. So the width of the "echo" pulse is equivalent to the time it takes the sound to reach the object and come back, which is twice as much as the distance to the object. 
 
    .. image:: spi1.png
       :width: 100%
@@ -21,6 +21,9 @@ The library uses the internal hardware spi device to measure the echo. SPI works
   .. image:: spi2.png
       :width: 100%
       :align: center
+      
+      
+Since the information is actually grouped in bytes, we need to identify the first time we receive something different than 0x00 and count its bits (our "preamble"), then wait until we receive something different than 0xFF (hexadecimal for the binary 11111111), which will be our "postamble" and then count the total nomber of bits as preamble + 8 x bytes in the middle + postamble. 
 
 .. contents::
 
