@@ -3,14 +3,24 @@ Basic micropython library for the micro:bit to read the distance from an ultraso
 
 This library allows the micro:bit to read the distance from an ultrasonic sensor HCSR04 or similar.
 
-It uses the SPI hardware internal device to measure the length of the returning echo, so by default you should connect the sonar echo pin to micro:bit pin 14 and th sonar trigger pin to micro:bit pin 15. The HC-SR04 works with 5V, so you should protect the micro:bit input with a couple of resistors. Note that you can use a US-100 with this library as well. The US-100 has the advantage that works directly with 3V, but it has a serial mode that provides better readings.
+It uses the SPI hardware internal device to measure the length of the returning echo, so by default you should connect the sonar echo pin to micro:bit pin 14 and the sonar trigger pin to micro:bit pin 15. The HC-SR04 works with 5V, so you should protect the micro:bit input with a couple of resistors to create a voltage divider (see, e.g. http://www.raspberrypi-spy.co.uk/2012/12/ultrasonic-distance-measurement-using-python-part-1/). Note that you can use a US-100 with this library as well. The US-100 has the advantage that works directly with 3V, so it does not require a voltage divider and you can connect it directly to the micro:bit. Note that the US-100 has a serial mode that provides better readings, so it is better to use the other library with it.
 
 
-   .. image:: spi.png
+   .. image:: ultrasonic.png
       :width: 100%
       :align: center
 
+These sensors look like robot eyes. In fact, one eye is an emitter and the other is a receiver. The sensor is triggered with a pulse of around 10 microseconds. When it gets the pulse from the micro:bit, it sends an ultrasonic tone through one of the "eyes". The other eye detects the reflection of the sound. The sensor generates a pulse as wide as the time it took for the frequency to be detected. So the width is equivalent to the time it takes the sound to reach the object and come back, which is twice as much as the distance to the object. 
 
+   .. image:: spi1.png
+      :width: 100%
+      :align: center
+
+The library uses the internal hardware spi device to measure the echo. SPI works by using one pin to set the clock speed, with pulses at the required frequency. Another pin is used to transmit bits at each clock cycle and the last pin is used to receive the bits from the other device. The library sends a pulse through MOSI and waits to receive something through MISO. Then, it measures the length of the returning pulse by counting the equivalent "bits".
+
+  .. image:: spi2.png
+      :width: 100%
+      :align: center
 
 .. contents::
 
