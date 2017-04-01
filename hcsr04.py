@@ -9,7 +9,7 @@ class HCSR04:
         self.echo_pin = epin
         self.sclk_pin = spin
 
-    def distance_cm(self):
+    def distance_mm(self):
         spi.init(baudrate=125000, sclk=self.sclk_pin,
                  mosi=self.trigger_pin, miso=self.echo_pin)
         pre = 0
@@ -33,8 +33,6 @@ class HCSR04:
                 post = bin(value).count("1") if k else 0
                 k = k + i
             except StopIteration:
-                k = -1
-        if i < 0 or k < 0:
-            return -1
-        else:
-            return round((pre + (k - i) * 8. + post) * 8 * 0.0172, 1)
+                i = -1
+        dist= -1 if i < 0 else round((pre + (k - i) * 8. + post) * 8 * 0.172)
+        return dist
