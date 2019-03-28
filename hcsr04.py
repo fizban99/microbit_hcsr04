@@ -34,5 +34,5 @@ class HCSR04:
                 k = k + i
             except StopIteration:
                 i = -1
-        dist= -1 if i < 0 else round((pre + (k - i) * 8. + post) * 8 * 0.172)
+        dist= -1 if i < 0 else round(((pre + (k - i) * 8. + post) * 8 * 0.172) / 2)
         return dist
