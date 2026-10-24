@@ -12,27 +12,20 @@ class HCSR04:
     def distance_mm(self):
         spi.init(baudrate=125000, sclk=self.sclk_pin,
                  mosi=self.trigger_pin, miso=self.echo_pin)
-        pre = 0
-        post = 0
-        k = -1
         length = 500
         resp = bytearray(length)
         resp[0] = 0xFF
         spi.write_readinto(resp, resp)
-        # find first non zero value
-        try:
-            i, value = next((ind, v) for ind, v in enumerate(resp) if v)
-        except StopIteration:
-            i = -1
-        if i > 0:
-            pre = bin(value).count("1")
-            # find first non full high value afterwards
-            try:
-                k, value = next((ind, v)
-                                for ind, v in enumerate(resp[i:length - 2]) if resp[i + ind + 1] == 0)
-                post = bin(value).count("1") if k else 0
-                k = k + i
-            except StopIteration:
-                i = -1
-        dist= -1 if i < 0 else round(((pre + (k - i) * 8. + post) * 8 * 0.172) / 2)
-        return dist
+        # A capture starting high has no observed rising edge.
+        if resp[0] & 0x80:
+            return -1
+        pulse_bits = 0
+        for value in resp:
+            # SPI captures the most significant bit first.
+            for shift in range(7, -1, -1):
+                if value & (1 << shift):
+                    pulse_bits += 1
+                elif pulse_bits:
+                    return round((pulse_bits * 8 * 0.172) / 2)
+        # No pulse, or the falling edge lies outside the capture.
+        return -1

@@ -34,7 +34,7 @@ Since the information is actually grouped in bytes, we need to identify the firs
 Main features
 =============
 
-* Get the distance in cm from the sonar to an object.
+* Get the distance in millimetres from the sonar to an object.
 * Sample program.
 
 
@@ -42,11 +42,12 @@ Library usage
 =============
 
 
-distance_cm()
+distance_mm()
 +++++++++++++++++++++++
 
 
-Get the distance in mm.
+Get the distance in millimetres. The return value is a number in mm; divide it
+by 10 when centimetres are required.
 
 
 .. code-block:: python
@@ -55,8 +56,23 @@ Get the distance in mm.
    from microbit import sleep
 
 
-   sonar=HCSR04()
+   sonar = HCSR04()
    while True:
-       print('%.1f' % (sonar.distance_mm()/10))
+       distance_mm = sonar.distance_mm()
+       distance_cm = distance_mm / 10
+       print('%.1f cm' % distance_cm)
        sleep(1000)
+
+Software tests
+==============
+
+Run the driver tests on a computer with Python 3, without a connected micro:bit::
+
+   python -B -m unittest discover -s tests -v
+
+The tests substitute synthetic SPI captures for the micro:bit SPI interface.
+They check pulse counting across byte boundaries and the ``-1`` result for
+missing or incomplete echoes. The existing distance conversion coefficient is
+preserved; these tests do not establish physical distance accuracy or SPI
+timing on a board.
 
